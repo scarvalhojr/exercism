@@ -1,4 +1,4 @@
-extern crate rle;
+extern crate run_length_encoding as rle;
 
 // encoding tests
 

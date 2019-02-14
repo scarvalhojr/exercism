@@ -1,6 +1,6 @@
 [package]
-name = "rle"
-version = "0.1.0"
+name = "run-length-encoding"
+version = "1.1.0"
 authors = ["Sergio de Carvalho <scarvalhojr@gmail.com>"]
 
 [dependencies]
