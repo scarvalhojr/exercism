@@ -2,25 +2,25 @@
 pub fn is_valid(code: &str) -> bool {
     match code
         .chars()
-        .filter(|ch| !ch.is_whitespace())
-        .map(|d| d.to_digit(10))
+        .filter(|ch| *ch != ' ')
+        .map(|ch| ch.to_digit(10))
         .collect::<Option<Vec<_>>>()
     {
         None => false,
         Some(digits) => {
             if digits.len() <= 1 {
-                false
-            } else {
-                digits
-                    .rchunks(2)
-                    .map(|pair| match *pair {
-                        [d1, d2] if d1 >= 5 => d1 * 2 - 9 + d2,
-                        [d1, d2] => d1 * 2 + d2,
-                        [d1] => d1,
-                        _ => 0,
-                    })
-                    .sum::<u32>() % 10 == 0
+                return false;
             }
+
+            digits
+                .iter()
+                .rev()
+                .enumerate()
+                .map(|(pos, &dig)| if pos % 2 == 0 { dig } else { 2 * dig })
+                .map(|value| if value > 9 { value - 9 } else { value })
+                .sum::<u32>()
+                % 10
+                == 0
         }
     }
 }
@@ -44,5 +44,6 @@ pub fn is_valid_fold(code: &str) -> bool {
                     },
                 )
             })
-        }).map_or(false, |(_, count, acc)| count > 1 && acc % 10 == 0)
+        })
+        .map_or(false, |(_, count, acc)| count > 1 && acc % 10 == 0)
 }
